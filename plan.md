@@ -1,8 +1,9 @@
-# Plan: prj-6818-task-mugtj2dd
+# Plan: task-mugtj2dd
 
 **Project:** `PRJ-5005`  
 **Task ID:** `task-mugtj2dd`  
 **Repo:** `prj-6818-task-mugtj2dd`  
+**Progress:** 1/4 subtasks done
 
 ## Summary
 
@@ -10,40 +11,36 @@
 
 ## Subtasks
 
-### 1. Создать структуру репозитория и базовый CLI-скелет
+### ⏳ 1. Создать структуру репозитория и базовый CLI-скелет
 
 - **ID:** `sub-1`
 - **Profile:** `20razrab1`
-- **Tester:** `TBD`
-- **Status:** `pending`
+- **Status:** `unknown`
 - **Description:** Создать pyproject.toml (или requirements.txt), директории src/ и tests/, точку входа sync_folders/cli.py с argparse (--src, --dst, --dry-run, --log). README с примером запуска.
 - **Test plan:** python -m sync_folders.cli --help выводит все флаги; pyproject валиден (pip install -e . проходит без ошибок).
 
-### 2. Реализовать логику синхронизации (v2)
+### ⬜ 2. Реализовать логику синхронизации (v2)
 
 - **ID:** `sub-2`
 - **Profile:** `20razrab1`
-- **Tester:** `TBD`
 - **Status:** `pending`
 - **Description:** Ядро sync_folders/sync.py: функция sync_dirs(src, dst, dry_run=False) c idempotent-семантикой — новые/изменённые файлы копируются, удалённые в src удаляются в dst, конфликты логируются. Хеш по sha256 для детекта изменений, обработка поддиректорий рекурсивно. Сохранение прав доступа и mtime через shutil.copystat.
 - **Test plan:** На фикстурах (src=3 файла, dst=2 устаревших + 1 лишний): после sync dst содержит все 3 актуальных файла и не содержит лишнего; запуск повторно — идемпотентен (0 операций).
 - **Dependencies:** `sub-1`
 
-### 3. Добавить dry-run режим и подробное логирование
+### ⬜ 3. Добавить dry-run режим и подробное логирование
 
 - **ID:** `sub-3`
 - **Profile:** `30razrab2`
-- **Tester:** `TBD`
 - **Status:** `pending`
 - **Description:** В cli.py подключить logging (structlog или stdlib logging с JSON-форматом), уровни INFO/WARNING/ERROR. Флаг --dry-run не выполняет копирование/удаление, только печатает планируемые операции. Добавить --exclude/--include globs и --delete-missing (default True).
 - **Test plan:** Запуск с --dry-run не меняет ФС (mtime dst не изменяется); в stdout — список planned operations; неверный путь приводит к exit code !=0 и ERROR-логу.
 - **Dependencies:** `sub-2`
 
-### 4. Покрыть тестами и обновить README
+### ⬜ 4. Покрыть тестами и обновить README
 
 - **ID:** `sub-4`
 - **Profile:** `30razrab2`
-- **Tester:** `TBD`
 - **Status:** `pending`
 - **Description:** pytest + tempfile фикстуры. Тесты: копирование новых файлов, обновление изменённых, удаление отсутствующих в src (с --delete-missing), идемпотентность, исключения по glob, dry-run не трогает ФС, обработка ошибок прав доступа. README с примерами запуска, флагами, секцией Troubleshooting. CI workflow (.github/workflows/test.yml) на pytest.
 - **Test plan:** pytest -v проходит все тесты зелёным; coverage ≥ 80%; README содержит секции Usage, Flags, Examples; CI workflow валиден (yamllint/Actions schema).
